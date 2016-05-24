@@ -244,7 +244,7 @@
         <control type="textbox" id="100023">
           <top>230</top>
           <left>20</left>
-          <height>245</height>
+          <height>185</height>
           <width>505</width>
           <font>font10</font>
           <textcolor>0xFFFFFFFF</textcolor>
@@ -253,6 +253,62 @@
           <align>justify</align>
           <aligny>top</aligny>
           <label></label>
+        </control>
+
+        <control type="group" id="10024">
+          <left>20</left>
+          <width>760</width>
+          <bottom>20</bottom>
+          <height>30</height>
+
+          <control type="button" id="10025">
+            <width>110</width>
+            <height>30</height>
+            <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
+            <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>Anterior</label>
+          </control>
+          <control type="button" id="10026">
+            <left>115</left>
+            <width>110</width>
+            <height>30</height>
+            <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
+            <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>Siguiente</label>
+          </control>
+          <control type="button" id="10027">
+            <left>253</left>
+            <width>110</width>
+            <height>30</height>
+            <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
+            <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>Cancelar</label>
+          </control>
+          <control type="button" id="10028">
+            <left>390</left>
+            <width>120</width>
+            <height>30</height>
+            <texturefocus>ChannelSettings/KeyboardKey.png</texturefocus>
+            <texturenofocus>ChannelSettings/KeyboardKeyNF.png</texturenofocus>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>Aceptar</label>
+          </control>
+          <control type="label" id="100029">
+            <right>0</right>
+            <width>110</width>
+            <font>font10</font>
+            <textcolor>0xFFFFA500</textcolor>
+            <align>right</align>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
         </control>
       </control>
     </controls>

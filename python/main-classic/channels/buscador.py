@@ -43,14 +43,28 @@ def mainlist(item,preferred_thumbnail="squares"):
 def testq(item):
   from platformcode import platformtools
 
+  '''
+  item.fulltitle ="star wars"
+  #item.show ="the walking dead"
+  #item.show = "Juego de tronos"
+  item.contentSeason= 6
+  item.contentepisodeNumber= 8
+  data= item
+  '''
+  text= "star wars"
 
-  #item.fulltitle ="star wars"
-  item.show ="Juego de Tronos"
-  item.contentSeason= 1
-  item.contentepisodeNumber=5
+  from core.tmdb import Tmdb
+  otmdb = Tmdb(texto_buscado=text, idioma_busqueda="es", tipo="movie")
+  data = otmdb.get_list_resultados(-1)
 
-  platformtools.show_video_info(item)
+  platformtools.show_video_info(data, caption="Seleccione el título correcto", callback='cb')
 
+def cb(dic):
+    if dic:
+        url = 'https://www.themoviedb.org/{0}/{1}'.format (dic["type"], dic["id_Tmdb"] )
+        logger.debug("############# Aceptar #####################\n" + url)
+    else:
+        logger.info("@@@@@@@@@@@@@@@ Cancelar @@@@@@@@@@@@@@@@@@@")
 
 # Al llamar a esta función, el sistema pedirá primero el texto a buscar
 # y lo pasará en el parámetro "tecleado"
