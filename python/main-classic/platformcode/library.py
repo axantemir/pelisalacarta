@@ -283,10 +283,17 @@ def savelibrary_tvshow(serie, episodelist, create_nfo=False):
         serie.infoLabels['title'] = serie.show
 
     # Abrir ventana de seleccion de serie
-    get_tvshow_from_tmdb(serie)
+    #get_tvshow_from_tmdb(serie)
+    from core import tmdb
+    otmdb = tmdb.Tmdb(texto_buscado=serie.infoLabels['title'], tipo='tv', year=serie.infoLabels.get('year', ''))
+    select = platformtools.show_video_info(otmdb.get_list_resultados(),caption="Seleccione la serie correcta",
+                                           callback='cb_select_from_tmdb')
+    if select:
+        serie.infoLabels.update(select)
+        logger.debug(tmdb.infoLabels_tostring(serie))
 
-    if 'tmdb_id' in serie.infoLabels:
-        tvshow_id = serie.infoLabels['tmdb_id']
+    if 'id_Tmdb' in serie.infoLabels:
+        tvshow_id = serie.infoLabels['id_Tmdb']
         create_nfo = True
     else:
         tvshow_id = "t_{0}_[{1}]".format(serie.show.strip().replace(" ", "_"), serie.channel)
@@ -325,10 +332,15 @@ def savelibrary_tvshow(serie, episodelist, create_nfo=False):
     if fallidos > -1 and (insertados + sobreescritos) > 0:
         # Guardar el registro series.json actualizado
         json_data = jsontools.dump_json(dict_series)
+        fname = join_path(config.get_data_path(), TVSHOW_FILE)
         save_file(json_data, fname)
 
     return insertados, sobreescritos, fallidos
 
+
+def cb_select_from_tmdb(dic):
+    print repr(dic)
+    return dic
 
 def get_dict_series():
     dict_series = {}
@@ -337,12 +349,9 @@ def get_dict_series():
     return dict_series
 
 
+'''
 def get_tvshow_from_tmdb(serie): #TODO decidir nombre
-    '''
-        hace una busqueda en tmdb por el nombre (y año si esta presente) y
-        presenta una 'ventana' para seleccionar uno
-        Retorna el item pasado como parametro con algunos infoLabels actualizados
-    '''
+
     from core import tmdb
     otmdb = tmdb.Tmdb(texto_buscado=serie.infoLabels['title'], tipo='tv', year=serie.infoLabels.get('year',''))
     list_resultados = otmdb.get_list_resultados()
@@ -377,11 +386,11 @@ def get_tvshow_from_tmdb(serie): #TODO decidir nombre
     # Fijamos los infoLabels
     logger.debug(repr(list_resultados[index_serie]))
     serie.infoLabels.update(list_resultados[index_serie])
-    serie.infoLabels['tmdb_id'] = list_resultados[index_serie]['id']
+    serie.infoLabels['id_Tmdb'] = list_resultados[index_serie]['id']
     serie.infoLabels['title'] = list_resultados[index_serie]['name'].strip() #Si fuesen movies seria title
     logger.debug(tmdb.infoLabels_tostring(serie))
     return serie
-
+'''
 
 def savelibrary_episodes(path, episodelist):
     """
@@ -923,8 +932,8 @@ def convert_xml_to_json(flag):
                                 from core import tmdb
                                 tmdb.set_infoLabels(serie, True)
                                 logger.debug(tmdb.infoLabels_tostring(serie))
-                                if 'tmdb_id' in serie.infoLabels:
-                                    tvshow_id = serie.infoLabels['tmdb_id']
+                                if 'id_Tmdb' in serie.infoLabels:
+                                    tvshow_id = serie.infoLabels['id_Tmdb']
                                     create_nfo = True
                                 else:
                                     tvshow_id = "t_{0}_[{1}]".format(tvshow.strip().replace(" ", "_"), channel)
