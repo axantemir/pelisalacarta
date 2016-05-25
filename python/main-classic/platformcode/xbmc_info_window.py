@@ -263,7 +263,8 @@ class InfoWindow(xbmcgui.WindowXMLDialog):
 
     # Obtenemos el canal desde donde se ha echo la llamada y cargamos los settings disponibles para ese canal
     channelpath = inspect.currentframe().f_back.f_back.f_code.co_filename
-    self.channel = os.path.basename(channelpath).replace(".py", "")
+    dir, modulo = os.path.split(channelpath)
+    self.channel = (os.path.basename(dir),modulo.replace(".py", ""))
 
     if type(data) == list:
         self.listData = data
@@ -366,12 +367,11 @@ class InfoWindow(xbmcgui.WindowXMLDialog):
             self.close()
             if self.callback:
               try:
-                  exec "from channels import " + self.channel + " as cb_channel"
+                  comand_import = "from {0} import {1} as cb_channel".format(self.channel)
+                  exec comand_import
               except:
-                  try:
-                      exec "from core import " + self.channel + " as cb_channel"
-                  except:
-                      logger.error('Imposible importar %s' % self.channel)
+                  logger.error('Imposible importar %s de %s' % (self.channel(0),self.channel(1)))
+              
               if id == 10028: #Boton Aceptar
                 exec "self.return_value =  cb_channel." + self.callback + "(self.result)"
               else: #Boton Cancelar y [X]
