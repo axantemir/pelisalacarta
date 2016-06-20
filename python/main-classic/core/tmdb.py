@@ -146,7 +146,9 @@ def set_infoLabels_item(item, seekTmdb=False, idioma_busqueda='es', lock=None):
                 continue
             elif k == 'overview':
                 infoLabels['plot'] = otmdb_global.get_sinopsis()
-            elif k == 'runtime':
+
+            v= re.sub(r"\n|\r|\t","",v)
+            if k == 'runtime':
                 infoLabels['duration'] = v
             elif k == 'release_date':
                 infoLabels['year'] = int(v[:4])
@@ -327,7 +329,9 @@ def set_infoLabels_item(item, seekTmdb=False, idioma_busqueda='es', lock=None):
                         # Busqueda de pelicula por titulo...
                         if item.infoLabels['year'] or 'filtro' in item.infoLabels:
                             # ...y año o filtro
-                            otmdb_global = Tmdb(texto_buscado=item.infoLabels['title'], tipo=tipo,
+                            titulo_buscado= item.fulltitle if item.fulltitle != '' else \
+                                            (item.contentTitle if item.contentTitle != '' else item.infoLabels['title'])
+                            otmdb_global = Tmdb(texto_buscado=titulo_buscado, tipo=tipo,
                                                 idioma_busqueda=idioma_busqueda,
                                                 filtro=item.infoLabels.get('filtro', {}),
                                                 year=str(item.infoLabels.get('year', '')))
