@@ -26,6 +26,7 @@
 import time
 import traceback
 import urllib2
+import re
 
 from core import logger
 # -----------------------------------------------------------------------------------------------------------
@@ -144,11 +145,12 @@ def set_infoLabels_item(item, seekTmdb=False, idioma_busqueda='es', lock=None):
         for k, v in otmdb_global.result.items():
             if v == '':
                 continue
-            elif k == 'overview':
-                infoLabels['plot'] = otmdb_global.get_sinopsis()
+            elif type(v) == str:
+                v = re.sub(r"\n|\r|\t", "", v)
 
-            v= re.sub(r"\n|\r|\t","",v)
-            if k == 'runtime':
+            if k == 'overview':
+                infoLabels['plot'] = otmdb_global.get_sinopsis()
+            elif k == 'runtime':
                 infoLabels['duration'] = v
             elif k == 'release_date':
                 infoLabels['year'] = int(v[:4])
